@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پیش‌بینی دیابت</title>
+    <style>
+        body {
+            font-family: Tahoma, Arial, sans-serif;
+            background-color: #f9f9f9;
+            padding: 20px;
+            direction: rtl;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .positive {
+            background-color: #e74c3c;
+            color: white;
+        }
+        .negative {
+            background-color: #2ecc71;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>پیش‌بینی دیابت بر اساس قوانین</h1>
+        <label for="glucose">Glucose:</label>
+        <input type="number" id="glucose" step="0.1" placeholder="مثلاً 120">
+
+        <label for="bmi">BMI:</label>
+        <input type="number" id="bmi" step="0.1" placeholder="مثلاً 28.5">
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" step="1" placeholder="مثلاً 35">
+
+        <label for="dpf">DiabetesPedigreeFunction:</label>
+        <input type="number" id="dpf" step="0.001" placeholder="مثلاً 0.5">
+
+        <button onclick="predict()">پیش‌بینی</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function predict() {
+            const glucose = parseFloat(document.getElementById('glucose').value);
+            const bmi = parseFloat(document.getElementById('bmi').value);
+            const age = parseFloat(document.getElementById('age').value);
+            const dpf = parseFloat(document.getElementById('dpf').value);
+
+            // اعتبارسنجی ورودی
+            if (isNaN(glucose) || isNaN(bmi) || isNaN(age) || isNaN(dpf)) {
+                alert("لطفاً همه مقادیر را وارد کنید.");
+                return;
+            }
+
+            let result = 0; // Default: 0
+
+            // قوانین برای خروجی 1
+            if (
+                (glucose > 101 && glucose <= 154 && bmi > 43.3 && age > 29) ||
+                (glucose > 154) ||
+                (glucose > 101 && bmi > 26.7 && dpf > 0.464 && age > 29)
+            ) {
+                result = 1;
+            }
+
+            // نمایش نتیجه
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = result === 1 ? 'پیش‌بینی: 1 (مبتلا)' : 'پیش‌بینی: 0 (غیرمبتلا)';
+            resultDiv.className = result === 1 ? 'positive' : 'negative';
+        }
+    </script>
+</body>
+</html>
